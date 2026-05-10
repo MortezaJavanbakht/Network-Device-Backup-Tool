@@ -1,0 +1,97 @@
+# ============================================================
+# network_backup — configuration file
+# ============================================================
+
+# ─── FTP Server ─────────────────────────────────────────────
+ftp:
+  host:      "192.168.1.2"       # FTP server IP or hostname
+  port:      21                    # Default FTP port
+  username:  "ftpuser"
+  password:  "ftppassword"
+  passive:   true                  # Use passive mode (recommended behind NAT/FW)
+  base_dir:  "backups"             # Root folder on FTP server
+
+# ─── Logging ────────────────────────────────────────────────
+logging:
+  file:  "./logs/backup.log"        # Log file path (created automatically)
+  level: "INFO"                   # DEBUG | INFO | WARNING | ERROR
+
+# ─── Zabbix Monitoring ──────────────────────────────────────
+zabbix:
+  # Path to the JSON status file read by Zabbix UserParameter
+  status_file: "/var/tmp/network_backup_status.json"
+
+# ─── Devices ────────────────────────────────────────────────
+# Supported types: cisco_ios | cisco_nexus | fortigate
+# Each device can override: port, timeout, read_delay
+
+devices:
+
+  #  ── Cisco IOS Switches ──────────────────────────────────
+  # - name:       "DC1-SW-CBS350"
+  #   site:       "ankara"
+  #   host:       "192.168.1.4"
+  #   type:       "cisco_ios"
+  #   username:   "backupuser"
+  #   password:   "backuppassword"
+  #   port:       22              # optional, default: 22
+  #   timeout:    60              # SSH connect timeout in seconds
+  #   read_delay: 3.0             # Seconds to wait after sending each command
+  #   transport:  "scp"           # This switch does not support FTP -- use SCP instead
+  #   scp:
+  #     host:     "192.168.1.4" # Same as FTP server
+  #     port:     22
+  #     username: "ubuntu"       # OS user (FTP user cannot login to OS)
+  #     password: "ubuntupassword"   # OS user password
+  #     path:     "/mnt/backup"      # FTP server's root directory on the OS
+
+  # - name:       "access-switch-01"
+  #   site:       "istanbul-dc"
+  #   host:       "10.0.0.2"
+  #   type:       "cisco_ios"
+  #   username:   "admin"
+  #   password:   "cisco_secret"
+  #   transport:  "ftp"
+
+  # - name:       "access-switch-02"
+  #   site:       "ankara-dc"
+  #   host:       "10.0.0.3"
+  #   type:       "cisco_ios"
+  #   username:   "admin"
+  #   password:   "cisco_secret"
+  #   transport:  "ftp"
+
+  # ── Cisco Nexus Switches ────────────────────────────────
+
+  # - name:       "DC1-SW-N3K"
+  #   site:       "ankara"
+  #   host:       "192.168.1.5"
+  #   type:       "cisco_nexus"
+  #   username:   "backupuser"
+  #   password:   "backuppassword"
+  #   vrf:        "default"
+
+  # - name:       "nexus-core-02"
+  #   site:       "ankara-dc"
+  #   host:       "10.0.1.2"
+  #   type:       "cisco_nexus"
+  #   username:   "admin"
+  #   password:   "nexus_secret"
+  #   vrf:        "management"
+
+  # ── FortiGate Firewalls ─────────────────────────────────
+  # - name:       "DC2-FW-01"
+  #   site:       "istanbul"
+  #   host:       "192.168.1.10"
+  #   type:       "fortigate"
+  #   username:   "backupuser"
+  #   password:   "backuppassword"
+  #   vdom:       false           # No VDOM → execute backup directly after login
+
+      #  - name:       "Mehrnegar-FW-40F"
+      #    site:       "Mehrnegar"
+      #    host:       "192.168.13.1"
+      #    type:       "fortigate"
+      #    username:   "m.javanbakht"
+      #    password:   "ff"
+      #    vdom:       true           # No VDOM → execute backup directly after login
